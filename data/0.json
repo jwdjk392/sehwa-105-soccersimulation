@@ -1,0 +1,33 @@
+{
+	"teamName": "Sample Team",
+	"players": [
+		{
+			"name": "Player 01",
+			"speed": 2,
+			"goal_rate": 0.1,
+			"strength": 2
+		},
+		{
+			"name": "Player 01",
+			"speed": 2,
+			"goal_rate": 0.1,
+			"strength": 2
+		},
+		{
+			"name": "Player 01",
+			"speed": 2,
+			"goal_rate": 0.1,
+			"strength": 2
+		},
+		{
+			"name": "Player 01",
+			"speed": 2,
+			"goal_rate": 0.1,
+			"strength": 2
+		}
+	],
+	"keeper": {
+		"name": "Keeper 0",
+		"defense_rate": 0.1
+	}
+}
