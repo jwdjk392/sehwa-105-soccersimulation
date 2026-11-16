@@ -1,0 +1,75 @@
+{
+  "teamName": "FC Barcelona",
+  "players": [
+    {
+      "name": "Pau Cubarsi",
+      "speed": 73,
+      "goal_rate": 0.06,
+      "strength": 74
+    },
+    {
+      "name": "Jules Kounde",
+      "speed": 82,
+      "goal_rate": 0.09,
+      "strength": 80
+    },
+    {
+      "name": "Alejandro Balde",
+      "speed": 94,
+      "goal_rate": 0.13,
+      "strength": 68
+    },
+    {
+      "name": "Joao Cancelo",
+      "speed": 82,
+      "goal_rate": 0.23,
+      "strength": 67
+    },
+    {
+      "name": "Rodri",
+      "speed": 70,
+      "goal_rate": 0.18,
+      "strength": 88
+    },
+    {
+      "name": "Pedri",
+      "speed": 78,
+      "goal_rate": 0.35,
+      "strength": 66
+    },
+    {
+      "name": "Frenkie de Jong",
+      "speed": 80,
+      "goal_rate": 0.22,
+      "strength": 74
+    },
+    {
+      "name": "Lamine Yamal",
+      "speed": 93,
+      "goal_rate": 0.78,
+      "strength": 64
+    },
+    {
+      "name": "Raphinha",
+      "speed": 89,
+      "goal_rate": 0.8,
+      "strength": 72
+    },
+    {
+      "name": "Gabriel Jesus",
+      "speed": 80,
+      "goal_rate": 0.72,
+      "strength": 75
+    },
+    {
+      "name": "Karim Adeyemi",
+      "speed": 97,
+      "goal_rate": 0.72,
+      "strength": 70
+    }
+  ],
+  "keeper": {
+    "name": "Joan Garcia",
+    "defense_rate": 0.87
+  }
+}

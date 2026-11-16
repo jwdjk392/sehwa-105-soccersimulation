@@ -1,84 +1,161 @@
-# 이 파일은 액션 연산용 파일
-# 입력된 매개변수에 따라 행동을 결정하고 실행할것.
-# 필요시 이 파일을 테스트하기 위한 별도의 코드를 제공할것
-# 이 파일은 모듈. 단독 실행되지 아니함.
+"""축구 경기 액션 시뮬레이터. 메인 로직에서 임포트해 사용하는 모듈."""
 
-class Simulator():
-	def __init__(self, myTeam, targetTeam):
-		# 팀 정보는 아래와 같은 딕셔너리를 myTeam, targetTeam받게됨.
-		#{
-		#"teamName": "Sample Team",
-		#"players": [
-		#	{
-		#		"name": "Player 01",
-		#		"speed": 57, => 0~100 사이 정수
-		#		"goal_rate": 0.1, => 0 ~ 1 사이 float
-		#		"strength": 48 => => 0~100 사이 정수
-		#	},
-		#	.. 비슷한 내용의 선수 정보 반복
-		# ],
-		# "keeper": {
-		#	"name": "Keeper 0",
-		#	"defense_rate": 0.1 => 0~1사이 float
-		#  }
-		#}
-		# myTeam은 내 팀임. 이 팀을 제어하게 됨. 사용자가 제어하는것: 팀 출전 선수 교체. 교체시 setCurrentOnfield 호출됨.
-		# 이 데이터를 저장하거나 필요한 세팅을 여기서 준비하면됨.
+import math
+import random
 
-	def setCurrentOnfield(myPlayerNames, enemyPlayerNames):
-		# 우리팀 혹은 상대팀의 현재 출전 상태의 선수를 변경되었다. 이 정보로 연산할것.
-		# myPlayerNames는 Array 형태로, 우리팀의 출전중인 선수 이름이 지정되어있음.
-		# enemyPlayerNames는 Array 형태로 상대팀의 출전중인 선수 이름이 지정되어있음.
-		# startSimulation에서는 이 선수들만 연산하는것임.
 
-	def startSimulation(turn, passToPlayer, shoot, movePlayerLocation, changeEnemyOnfieldStatus):
-		# 시뮬레이션을 시작함.
-		# turn: 현재 턴 수. 0 ~ 29턴. 숫자.
-		# 이번턴에 각 선수는 1회 ~ 3회내로 행동 가능.
-		# passToPlayer, shoot, movePlayerLocation, changeEnemyOnfieldStatus는 함수임
-		# 패스 시
-		# passToPlayer(playerName, wantedPlayerName, receivedPlayerName, successful) 
-		# => playerName에 패스릃 하는 사람의 이름
-		# => wantedPlayerName에 패스를 원래 받기로 의도한 사람의 이름
-		# => receivedPlayerName에 실제로 받는 사람의 이름
-		# => successful에 패스 성공 여부에 대한 boolean.
+class Simulator:
+    def __init__(self, myTeam, targetTeam):
+        # 원본에서 정의한 공개 함수 이름과 콜백 규약을 유지합니다.
+        self.myTeam = myTeam
+        self.targetTeam = targetTeam
+        self.my_roster = {p['name']: dict(p) for p in myTeam.get('players', [])}
+        self.enemy_roster = {p['name']: dict(p) for p in targetTeam.get('players', [])}
+        self.my_onfield = list(self.my_roster)
+        self.enemy_onfield = list(self.enemy_roster)
+        self.status = {}
+        self._enemy_last_change = -1
 
-		# 슛 시도.
-		# shoot(playerName, successful)
-		# => playerName에 슛을 시도하는 플레이어 이름을.
-		# => successful에 슛 성공 여부
-		# movePlayerLocation(playerName, x, y)
+    def setCurrentOnfield(self, myPlayerNames, enemyPlayerNames):
+        # 전달된 이름만 실제 출전 선수로 사용합니다.
+        self.my_onfield = [n for n in dict.fromkeys(myPlayerNames) if n in self.my_roster]
+        self.enemy_onfield = [n for n in dict.fromkeys(enemyPlayerNames) if n in self.enemy_roster]
 
-		# 선수 위치 이동
-		# => playerName에 선수이름
-		# => x, y에 좌푯값. X 0~160 / Y 0~80
-		# 우리팀과 상대팀의 모든 선수에 대해서 시뮬레이션을 하고 적절한 함수를 호출할 것.
-		
-		# changeEnemyOnfieldStatus
-		# => 상대팀의 출전중인 선수를 변경
-		# => 상대팀의 출전 선수 변경은 자동적으로 이루어짐. 따라서 이 함수를 통해서 변경할 수 있음.
-		# => Array 형태로 선수 이름을 반환할것.
-		# 각 선수에 대해서 진행하고 적절한 함수를 호출할 것.
-	def setCurrentStatus(gameStatus):
-		# 현재 상태에 대한 신규 정보 수신. 앞으로 여기서 수신한 정보를 이용하여 연산할것이기에 저장할것.
-		# gameStatus는 다음과 같은 구조의 딕셔너리
-		# {
-		#	"time": 현재 턴 수 (0~29턴) / 숫자
-		#	"ballOwner": 현재 공을 가지고 있는 플레이어 이름. 상대 팀 일수도 있음.,
-		#	"myTeamGoalCount": 우리팀의 골 횟수. 정수.
-		# 	"enemyTeamGoalCount": 상대팀의 골 횟수. 정수.
-		#	"myPlayers": [
-		#		{
-		#			"playerName": 선수 이름
-		#			"playerX": 선수 X 좌표
-		#			"playerY": 선수 Y 좌표
-		#		} ... 출전중인 우리팀의 모든 선수에 대한 정보. 출전중이 아닌 선수는 이 목록에 없음
-		#	]
-		# 	"enemyPlayers": [
-		#		{
-		#			"playerName": 선수 이름
-		#			"playerX": 선수 X 좌표
-		#			"playerY": 선수 Y 좌표
-		#		} ... 출전중인 상대팀의 모든 선수에 대한 정보. 출전중이 아닌 선수는 이 목록에 없음.
-		#	]
-		# }
+    def setCurrentStatus(self, gameStatus):
+        # 입력 딕셔너리를 외부에서 수정하더라도 내부 상태가 달라지지 않게 복사합니다.
+        self.status = dict(gameStatus)
+        self.status['myPlayers'] = [dict(p) for p in gameStatus.get('myPlayers', [])]
+        self.status['enemyPlayers'] = [dict(p) for p in gameStatus.get('enemyPlayers', [])]
+
+    @staticmethod
+    def _clamp(value, low, high):
+        return max(low, min(high, value))
+
+    @staticmethod
+    def _distance(a, b):
+        return math.hypot(a[0] - b[0], a[1] - b[1])
+
+    def _stats(self, name, my_side):
+        return (self.my_roster if my_side else self.enemy_roster).get(name, {})
+
+    def _speed(self, name, my_side):
+        return self._clamp(float(self._stats(name, my_side).get('speed', 50)), 0, 100)
+
+    def _strength(self, name, my_side):
+        return self._clamp(float(self._stats(name, my_side).get('strength', 50)), 0, 100)
+
+    def _step_towards(self, old, target, max_step):
+        dist = self._distance(old, target)
+        if dist == 0:
+            return old
+        ratio = min(1.0, max_step / dist)
+        return (self._clamp(old[0] + (target[0] - old[0]) * ratio, 0, 160),
+                self._clamp(old[1] + (target[1] - old[1]) * ratio, 0, 80))
+
+    def _pass_probability(self, start, end, opponents, passer, my_side):
+        length = self._distance(start, end)
+        chance = 0.95 - length * 0.006
+        # 패스 경로 근처에 수비수가 있으면 차단될 가능성이 증가합니다.
+        dx, dy = end[0] - start[0], end[1] - start[1]
+        denom = dx * dx + dy * dy
+        if denom > 0:
+            nearest = 1000.0
+            for point in opponents.values():
+                t = self._clamp(((point[0]-start[0])*dx + (point[1]-start[1])*dy)/denom, 0, 1)
+                projected = (start[0] + t*dx, start[1] + t*dy)
+                nearest = min(nearest, self._distance(point, projected))
+            if nearest < 10:
+                chance -= (10-nearest)*0.025
+        chance += (self._strength(passer, my_side)-50)*0.001
+        return self._clamp(chance, 0.08, 0.98)
+
+    def _shoot_probability(self, point, attacker, my_side, opponents):
+        # 가정: 우리 팀은 +X 방향, 상대 팀은 -X 방향으로 공격합니다.
+        goal = (160, 40) if my_side else (0, 40)
+        dist = self._distance(point, goal)
+        goal_rate = self._clamp(float(self._stats(attacker, my_side).get('goal_rate', .10)), 0, 1)
+        keeper = (self.targetTeam if my_side else self.myTeam).get('keeper', {})
+        defense_rate = self._clamp(float(keeper.get('defense_rate', .10)), 0, 1)
+        # goal_rate는 공격 성공 성향, defense_rate는 골키퍼 방어 성향으로 적용.
+        chance = (0.08 + 0.72*goal_rate + 0.36*(1-dist/160)) * (1-0.72*defense_rate)
+        nearby = sum(self._distance(point, p) < 12 for p in opponents.values())
+        chance *= max(.45, 1-.13*nearby)
+        return self._clamp(chance, 0.01, 0.90)
+
+    def _maybe_change_enemy(self, turn, callback):
+        # 30분과 60분에 벤치가 있고 유효한 대체가 가능한 경우에만 자동 교체.
+        if turn not in (30, 60) or self._enemy_last_change == turn:
+            return
+        bench = [n for n in self.enemy_roster if n not in self.enemy_onfield]
+        if not bench or not self.enemy_onfield:
+            return
+        incoming = max(bench, key=lambda n: self._speed(n, False)+self._strength(n, False))
+        outgoing = min(self.enemy_onfield, key=lambda n: self._speed(n, False)+self._strength(n, False))
+        next_names = [incoming if n == outgoing else n for n in self.enemy_onfield]
+        callback(next_names)
+        self.enemy_onfield = next_names
+        self._enemy_last_change = turn
+
+    def startSimulation(self, turn, passToPlayer, shoot, movePlayerLocation, changeEnemyOnfieldStatus):
+        if not isinstance(turn, int) or not 0 <= turn <= 89:
+            raise ValueError('turn은 0부터 89까지의 정수여야 합니다.')
+        if not self.status:
+            raise ValueError('startSimulation 전에 setCurrentStatus를 호출해야 합니다.')
+
+        self._maybe_change_enemy(turn, changeEnemyOnfieldStatus)
+        mine = {p['playerName']: (self._clamp(float(p['playerX']), 0, 160),
+                                  self._clamp(float(p['playerY']), 0, 80))
+                for p in self.status['myPlayers'] if p['playerName'] in self.my_onfield}
+        enemy = {p['playerName']: (self._clamp(float(p['playerX']), 0, 160),
+                                    self._clamp(float(p['playerY']), 0, 80))
+                 for p in self.status['enemyPlayers'] if p['playerName'] in self.enemy_onfield}
+        owner = self.status.get('ballOwner')
+        # 모든 출전 선수는 이동 행동을 1회 수행합니다. 원본 위치 데이터에 없는 선수는 제외.
+        for my_side, friends, opponents in ((True, mine, enemy), (False, enemy, mine)):
+            direction = 1 if my_side else -1
+            for name, pos in list(friends.items()):
+                if name == owner:
+                    target = (pos[0] + direction*14, 40)
+                elif owner in opponents:
+                    target = opponents[owner]
+                elif owner in friends:
+                    target = (pos[0] + direction*11, 40 + (pos[1]-40)*0.85)
+                else:
+                    target = (pos[0] + direction*4, 40 + (pos[1]-40)*0.9)
+                speed = self._speed(name, my_side)
+                updated = self._step_towards(pos, target, 1 + speed*.03)
+                movePlayerLocation(name, round(updated[0], 2), round(updated[1], 2))
+                friends[name] = updated
+
+        # 1분 턴 3회마다 한 번만 패스 또는 슛을 시도해 기존 행동 빈도를 유지합니다.
+        if turn % 3 != 2:
+            return
+
+        # 실제 공 소유자만 패스 또는 슛을 시도할 수 있습니다.
+        for my_side, friends, opponents in ((True, mine, enemy), (False, enemy, mine)):
+            if owner not in friends:
+                continue
+            point = friends[owner]
+            goal = (160, 40) if my_side else (0, 40)
+            distance_to_goal = self._distance(point, goal)
+            options = [(name, p) for name, p in friends.items() if name != owner]
+            # 골에 가까우면 슛, 멀면 전진 가능한 동료에게 패스.
+            if distance_to_goal <= 35 or not options:
+                success = random.random() < self._shoot_probability(point, owner, my_side, opponents)
+                shoot(owner, success)
+            else:
+                forward = [(n, p) for n, p in options
+                           if (p[0]-point[0])*(1 if my_side else -1) > 0]
+                candidates = forward or options
+                wanted, destination = min(candidates, key=lambda item: self._distance(item[1], goal))
+                chance = self._pass_probability(point, destination, opponents, owner, my_side)
+                success = random.random() < chance
+                if success:
+                    received = wanted
+                elif opponents:
+                    received = min(opponents, key=lambda n: self._distance(opponents[n], destination))
+                else:
+                    # 상대 선수가 없으면 실패한 패스의 수신자를 특정할 수 없습니다.
+                    received = None
+                passToPlayer(owner, wanted, received, success)
+            break

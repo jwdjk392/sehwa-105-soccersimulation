@@ -1,0 +1,75 @@
+{
+  "teamName": "Paris Saint-Germain",
+  "players": [
+    {
+      "name": "Achraf Hakimi",
+      "speed": 94,
+      "goal_rate": 0.21,
+      "strength": 70
+    },
+    {
+      "name": "Marquinhos",
+      "speed": 73,
+      "goal_rate": 0.08,
+      "strength": 82
+    },
+    {
+      "name": "Willian Pacho",
+      "speed": 77,
+      "goal_rate": 0.05,
+      "strength": 88
+    },
+    {
+      "name": "Nuno Mendes",
+      "speed": 92,
+      "goal_rate": 0.17,
+      "strength": 75
+    },
+    {
+      "name": "Joao Neves",
+      "speed": 77,
+      "goal_rate": 0.27,
+      "strength": 68
+    },
+    {
+      "name": "Vitinha",
+      "speed": 79,
+      "goal_rate": 0.34,
+      "strength": 66
+    },
+    {
+      "name": "Fabian Ruiz",
+      "speed": 69,
+      "goal_rate": 0.25,
+      "strength": 73
+    },
+    {
+      "name": "Desire Doue",
+      "speed": 87,
+      "goal_rate": 0.67,
+      "strength": 70
+    },
+    {
+      "name": "Khvicha Kvaratskhelia",
+      "speed": 86,
+      "goal_rate": 0.75,
+      "strength": 75
+    },
+    {
+      "name": "Ousmane Dembele",
+      "speed": 96,
+      "goal_rate": 0.81,
+      "strength": 61
+    },
+    {
+      "name": "Ferran Torres",
+      "speed": 82,
+      "goal_rate": 0.73,
+      "strength": 71
+    }
+  ],
+  "keeper": {
+    "name": "Lucas Chevalier",
+    "defense_rate": 0.87
+  }
+}

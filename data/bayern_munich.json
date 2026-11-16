@@ -1,0 +1,75 @@
+{
+  "teamName": "Bayern Munich",
+  "players": [
+    {
+      "name": "Dayot Upamecano",
+      "speed": 82,
+      "goal_rate": 0.06,
+      "strength": 88
+    },
+    {
+      "name": "Kim Min-jae",
+      "speed": 78,
+      "goal_rate": 0.05,
+      "strength": 87
+    },
+    {
+      "name": "Jonathan Tah",
+      "speed": 65,
+      "goal_rate": 0.06,
+      "strength": 91
+    },
+    {
+      "name": "Alphonso Davies",
+      "speed": 96,
+      "goal_rate": 0.12,
+      "strength": 71
+    },
+    {
+      "name": "Joshua Kimmich",
+      "speed": 74,
+      "goal_rate": 0.24,
+      "strength": 76
+    },
+    {
+      "name": "Aleksandar Pavlovic",
+      "speed": 71,
+      "goal_rate": 0.13,
+      "strength": 77
+    },
+    {
+      "name": "Jamal Musiala",
+      "speed": 88,
+      "goal_rate": 0.68,
+      "strength": 70
+    },
+    {
+      "name": "Michael Olise",
+      "speed": 90,
+      "goal_rate": 0.77,
+      "strength": 66
+    },
+    {
+      "name": "Luis Diaz",
+      "speed": 91,
+      "goal_rate": 0.72,
+      "strength": 74
+    },
+    {
+      "name": "Serge Gnabry",
+      "speed": 85,
+      "goal_rate": 0.65,
+      "strength": 72
+    },
+    {
+      "name": "Harry Kane",
+      "speed": 74,
+      "goal_rate": 0.94,
+      "strength": 90
+    }
+  ],
+  "keeper": {
+    "name": "Manuel Neuer",
+    "defense_rate": 0.89
+  }
+}

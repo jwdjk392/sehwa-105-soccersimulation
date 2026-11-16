@@ -1,0 +1,75 @@
+{
+  "teamName": "Manchester United",
+  "players": [
+    {
+      "name": "Matthijs de Ligt",
+      "speed": 73,
+      "goal_rate": 0.07,
+      "strength": 89
+    },
+    {
+      "name": "Lisandro Martinez",
+      "speed": 73,
+      "goal_rate": 0.05,
+      "strength": 83
+    },
+    {
+      "name": "Diogo Dalot",
+      "speed": 86,
+      "goal_rate": 0.12,
+      "strength": 77
+    },
+    {
+      "name": "Patrick Dorgu",
+      "speed": 90,
+      "goal_rate": 0.15,
+      "strength": 75
+    },
+    {
+      "name": "Carlos Baleba",
+      "speed": 81,
+      "goal_rate": 0.14,
+      "strength": 85
+    },
+    {
+      "name": "Bruno Fernandes",
+      "speed": 75,
+      "goal_rate": 0.56,
+      "strength": 69
+    },
+    {
+      "name": "Youri Tielemans",
+      "speed": 72,
+      "goal_rate": 0.28,
+      "strength": 80
+    },
+    {
+      "name": "Bryan Mbeumo",
+      "speed": 86,
+      "goal_rate": 0.74,
+      "strength": 76
+    },
+    {
+      "name": "Marcus Rashford",
+      "speed": 92,
+      "goal_rate": 0.76,
+      "strength": 71
+    },
+    {
+      "name": "Matheus Cunha",
+      "speed": 83,
+      "goal_rate": 0.7,
+      "strength": 79
+    },
+    {
+      "name": "Benjamin Sesko",
+      "speed": 85,
+      "goal_rate": 0.82,
+      "strength": 86
+    }
+  ],
+  "keeper": {
+    "name": "Senne Lammens",
+    "defense_rate": 0.84
+  }
+}
