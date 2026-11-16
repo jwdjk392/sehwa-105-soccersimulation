@@ -4,6 +4,23 @@ import math
 import random
 
 
+FORMATION_POSITIONS = {
+    'LCB': (27, 29), 'RCB': (27, 51), 'CB': (27, 40),
+    'LB': (32, 12), 'RB': (32, 68),
+    'DM': (45, 40), 'LCM': (54, 28), 'RCM': (54, 52), 'CM': (54, 40),
+    'AM': (67, 40), 'LW': (81, 16), 'RW': (81, 64), 'ST': (91, 40),
+}
+DEFAULT_POSITIONS = ('LCB', 'RCB', 'LB', 'RB', 'DM', 'LCM', 'RCM', 'LW', 'RW', 'ST', 'AM')
+
+
+def formation_position(player, is_my_team, fallback_index=0):
+    position = str(player.get('position', '')).upper()
+    if position not in FORMATION_POSITIONS:
+        position = DEFAULT_POSITIONS[fallback_index % len(DEFAULT_POSITIONS)]
+    x, y = FORMATION_POSITIONS[position]
+    return (x if is_my_team else 160 - x), y
+
+
 class Simulator:
     def __init__(self, myTeam, targetTeam):
         # 원본에서 정의한 공개 함수 이름과 콜백 규약을 유지합니다.
@@ -11,6 +28,8 @@ class Simulator:
         self.targetTeam = targetTeam
         self.my_roster = {p['name']: dict(p) for p in myTeam.get('players', [])}
         self.enemy_roster = {p['name']: dict(p) for p in targetTeam.get('players', [])}
+        self.my_position_indices = {name: index for index, name in enumerate(self.my_roster)}
+        self.enemy_position_indices = {name: index for index, name in enumerate(self.enemy_roster)}
         self.my_onfield = list(self.my_roster)
         self.enemy_onfield = list(self.enemy_roster)
         self.status = {}
@@ -43,6 +62,54 @@ class Simulator:
 
     def _strength(self, name, my_side):
         return self._clamp(float(self._stats(name, my_side).get('strength', 50)), 0, 100)
+
+    def _home_position(self, name, my_side):
+        roster = self.my_roster if my_side else self.enemy_roster
+        indices = self.my_position_indices if my_side else self.enemy_position_indices
+        return formation_position(roster.get(name, {}), my_side, indices.get(name, 0))
+
+    def _role(self, name, my_side):
+        position = str(self._stats(name, my_side).get('position', '')).upper()
+        if position not in FORMATION_POSITIONS:
+            roster = self.my_roster if my_side else self.enemy_roster
+            indices = self.my_position_indices if my_side else self.enemy_position_indices
+            position = DEFAULT_POSITIONS[indices.get(name, 0) % len(DEFAULT_POSITIONS)]
+        if position in ('LCB', 'RCB', 'CB', 'LB', 'RB'):
+            return 'defender'
+        if position in ('DM', 'LCM', 'RCM', 'CM', 'AM'):
+            return 'midfielder'
+        return 'forward'
+
+    def _movement_target(self, name, pos, friends, opponents, owner, my_side, presser):
+        direction = 1 if my_side else -1
+        home_x, home_y = self._home_position(name, my_side)
+        role = self._role(name, my_side)
+
+        if owner == name:
+            carry_distance = {'defender': 8, 'midfielder': 12, 'forward': 16}[role]
+            return (pos[0] + direction * carry_distance, pos[1])
+
+        if owner in friends:
+            ball_x, ball_y = friends[owner]
+            advance, tracking = {
+                'defender': (1, 0.35),
+                'midfielder': (8, 0.55),
+                'forward': (15, 0.70),
+            }[role]
+            ball_progress = (ball_x - home_x) * direction
+            support_run = self._clamp(ball_progress * tracking, -12, 24)
+            lane_pull = self._clamp((ball_y - home_y) * 0.32, -12, 12)
+            return (home_x + direction * (advance + support_run), home_y + lane_pull)
+
+        if owner in opponents:
+            ball_x, ball_y = opponents[owner]
+            if name == presser:
+                return (ball_x - direction * 4, ball_y)
+            compact_x = self._clamp((ball_x - home_x) * 0.18, -10, 10)
+            compact_y = self._clamp((ball_y - home_y) * 0.16, -8, 8)
+            return (home_x + compact_x, home_y + compact_y)
+
+        return (home_x, home_y)
 
     def _step_towards(self, old, target, max_step):
         dist = self._distance(old, target)
@@ -110,18 +177,13 @@ class Simulator:
                                     self._clamp(float(p['playerY']), 0, 80))
                  for p in self.status['enemyPlayers'] if p['playerName'] in self.enemy_onfield}
         owner = self.status.get('ballOwner')
-        # 모든 출전 선수는 이동 행동을 1회 수행합니다. 원본 위치 데이터에 없는 선수는 제외.
+        # 수비는 가장 가까운 한 명만 압박하고, 나머지는 포지션 간격을 유지합니다.
         for my_side, friends, opponents in ((True, mine, enemy), (False, enemy, mine)):
-            direction = 1 if my_side else -1
+            presser = None
+            if owner in opponents and friends:
+                presser = min(friends, key=lambda name: self._distance(friends[name], opponents[owner]))
             for name, pos in list(friends.items()):
-                if name == owner:
-                    target = (pos[0] + direction*14, 40)
-                elif owner in opponents:
-                    target = opponents[owner]
-                elif owner in friends:
-                    target = (pos[0] + direction*11, 40 + (pos[1]-40)*0.85)
-                else:
-                    target = (pos[0] + direction*4, 40 + (pos[1]-40)*0.9)
+                target = self._movement_target(name, pos, friends, opponents, owner, my_side, presser)
                 speed = self._speed(name, my_side)
                 updated = self._step_towards(pos, target, 1 + speed*.03)
                 movePlayerLocation(name, round(updated[0], 2), round(updated[1], 2))
@@ -139,9 +201,15 @@ class Simulator:
             goal = (160, 40) if my_side else (0, 40)
             distance_to_goal = self._distance(point, goal)
             options = [(name, p) for name, p in friends.items() if name != owner]
-            # 골에 가까우면 슛, 멀면 전진 가능한 동료에게 패스.
-            if distance_to_goal <= 35 or not options:
-                success = random.random() < self._shoot_probability(point, owner, my_side, opponents)
+            # 가까운 슛은 적극적으로 시도하고, 중거리 슛은 낮은 확률로 섞습니다.
+            close_shot = distance_to_goal <= 42
+            long_shot = distance_to_goal <= 62 and random.random() < 0.32
+            if close_shot or long_shot or not options:
+                chance = self._shoot_probability(point, owner, my_side, opponents)
+                if distance_to_goal > 42:
+                    chance *= max(0.25, 1 - (distance_to_goal - 42) * 0.025)
+                chance = self._clamp(chance + random.uniform(-0.12, 0.12), 0.02, 0.90)
+                success = random.random() < chance
                 shoot(owner, success)
             else:
                 forward = [(n, p) for n, p in options

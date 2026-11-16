@@ -3,66 +3,77 @@
   "players": [
     {
       "name": "Achraf Hakimi",
+      "position": "RB",
       "speed": 94,
       "goal_rate": 0.21,
       "strength": 70
     },
     {
       "name": "Marquinhos",
+      "position": "LCB",
       "speed": 73,
       "goal_rate": 0.08,
       "strength": 82
     },
     {
       "name": "Willian Pacho",
+      "position": "RCB",
       "speed": 77,
       "goal_rate": 0.05,
       "strength": 88
     },
     {
       "name": "Nuno Mendes",
+      "position": "LB",
       "speed": 92,
       "goal_rate": 0.17,
       "strength": 75
     },
     {
       "name": "Joao Neves",
+      "position": "DM",
       "speed": 77,
       "goal_rate": 0.27,
       "strength": 68
     },
     {
       "name": "Vitinha",
+      "position": "LCM",
       "speed": 79,
       "goal_rate": 0.34,
       "strength": 66
     },
     {
       "name": "Fabian Ruiz",
+      "position": "RCM",
       "speed": 69,
       "goal_rate": 0.25,
       "strength": 73
     },
     {
       "name": "Desire Doue",
+      "position": "AM",
       "speed": 87,
       "goal_rate": 0.67,
       "strength": 70
     },
     {
       "name": "Khvicha Kvaratskhelia",
+      "position": "LW",
       "speed": 86,
       "goal_rate": 0.75,
       "strength": 75
     },
     {
       "name": "Ousmane Dembele",
+      "position": "RW",
       "speed": 96,
       "goal_rate": 0.81,
       "strength": 61
     },
     {
       "name": "Ferran Torres",
+      "position": "ST",
       "speed": 82,
       "goal_rate": 0.73,
       "strength": 71

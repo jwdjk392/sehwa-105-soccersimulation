@@ -11,6 +11,7 @@ class Simulator():
 		#"players": [
 		#	{
 		#		"name": "Player 01",
+		#		"position": "ST", => 포지션 코드 (LCB, RCB, CB, LB, RB, DM, LCM, RCM, CM, AM, LW, RW, ST)
 		#		"speed": 57, => 0~100 사이 정수
 		#		"goal_rate": 0.1, => 0 ~ 1 사이 float
 		#		"strength": 48 => => 0~100 사이 정수

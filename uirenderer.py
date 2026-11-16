@@ -245,10 +245,13 @@ class GameScreen:
         scrollbar.pack(side="right", fill="y")
 
         variables = {}
+        positions = {str(p.get("name")): str(p.get("position", "")).strip() for p in players}
         for name in names:
             var = BooleanVar(value=(len(variables) < 10))
             variables[name] = var
-            Checkbutton(list_frame, text=name, variable=var, anchor="w",
+            position = positions.get(name)
+            label = f"{name} ({position})" if position else name
+            Checkbutton(list_frame, text=label, variable=var, anchor="w",
                         font=("맑은 고딕", 10)).pack(fill="x", pady=2)
 
         def confirm():

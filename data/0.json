@@ -3,66 +3,77 @@
 	"players": [
 		{
 			"name": "Player 01",
+			"position": "LCB",
 			"speed": 58,
 			"goal_rate": 0.1,
 			"strength": 38
 		},
 		{
 			"name": "Player 02",
+			"position": "RCB",
 			"speed": 72,
 			"goal_rate": 0.18,
 			"strength": 54
 		},
 		{
 			"name": "Player 03",
+			"position": "LB",
 			"speed": 64,
 			"goal_rate": 0.12,
 			"strength": 70
 		},
 		{
 			"name": "Player 04",
+			"position": "RB",
 			"speed": 81,
 			"goal_rate": 0.09,
 			"strength": 48
 		},
 		{
 			"name": "Player 05",
+			"position": "DM",
 			"speed": 57,
 			"goal_rate": 0.22,
 			"strength": 62
 		},
 		{
 			"name": "Player 06",
+			"position": "LCM",
 			"speed": 68,
 			"goal_rate": 0.15,
 			"strength": 59
 		},
 		{
 			"name": "Player 07",
+			"position": "RCM",
 			"speed": 74,
 			"goal_rate": 0.11,
 			"strength": 66
 		},
 		{
 			"name": "Player 08",
+			"position": "LW",
 			"speed": 53,
 			"goal_rate": 0.2,
 			"strength": 73
 		},
 		{
 			"name": "Player 09",
+			"position": "RW",
 			"speed": 77,
 			"goal_rate": 0.08,
 			"strength": 51
 		},
 		{
 			"name": "Player 10",
+			"position": "ST",
 			"speed": 61,
 			"goal_rate": 0.17,
 			"strength": 64
 		},
 		{
 			"name": "Player 11",
+			"position": "AM",
 			"speed": 79,
 			"goal_rate": 0.1,
 			"strength": 76

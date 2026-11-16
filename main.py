@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 from uirenderer import GameResult, GameScreen, selectTeam
-from simulation import Simulator
+from simulation import Simulator, formation_position
 
 DATA_DIR = Path(__file__).parent / "data"
 FIELD_WIDTH = 160
@@ -39,14 +39,11 @@ def _valid_player_names(requested_names, team):
     return names
 
 
-def _initial_positions(player_names, is_my_team):
+def _initial_positions(players, is_my_team):
     positions = {}
-    for index, name in enumerate(player_names):
-        # 4명씩 한 줄에 배치하고, 상대 팀은 X축을 기준으로 반대편에 둡니다.
-        x = 20 + (index // 4) * 14
-        y = 10 + (index % 4) * 20
-        if not is_my_team:
-            x = FIELD_WIDTH - x
+    for index, player in enumerate(players):
+        name = player['name']
+        x, y = formation_position(player, is_my_team, index)
         positions[name] = {"playerName": name, "playerX": x, "playerY": y}
     return positions
 
@@ -79,14 +76,8 @@ def run_match(my_team, enemy_team):
     if not my_onfield or not enemy_onfield:
         raise ValueError("양 팀 모두 출전 가능한 선수가 한 명 이상 필요합니다.")
 
-    my_roster_names = [
-        player["name"] for player in my_team.get("players", []) if player.get("name")
-    ]
-    enemy_roster_names = [
-        player["name"] for player in enemy_team.get("players", []) if player.get("name")
-    ]
-    my_positions = _initial_positions(my_roster_names, is_my_team=True)
-    enemy_positions = _initial_positions(enemy_roster_names, is_my_team=False)
+    my_positions = _initial_positions(my_team.get("players", []), is_my_team=True)
+    enemy_positions = _initial_positions(enemy_team.get("players", []), is_my_team=False)
     game_status = {
         "time": 0,
         "ballOwner": my_onfield[0],

@@ -3,66 +3,77 @@
   "players": [
     {
       "name": "Dayot Upamecano",
+      "position": "LCB",
       "speed": 82,
       "goal_rate": 0.06,
       "strength": 88
     },
     {
       "name": "Kim Min-jae",
+      "position": "RCB",
       "speed": 78,
       "goal_rate": 0.05,
       "strength": 87
     },
     {
       "name": "Jonathan Tah",
+      "position": "CB",
       "speed": 65,
       "goal_rate": 0.06,
       "strength": 91
     },
     {
       "name": "Alphonso Davies",
+      "position": "LB",
       "speed": 96,
       "goal_rate": 0.12,
       "strength": 71
     },
     {
       "name": "Joshua Kimmich",
+      "position": "DM",
       "speed": 74,
       "goal_rate": 0.24,
       "strength": 76
     },
     {
       "name": "Aleksandar Pavlovic",
+      "position": "LCM",
       "speed": 71,
       "goal_rate": 0.13,
       "strength": 77
     },
     {
       "name": "Jamal Musiala",
+      "position": "AM",
       "speed": 88,
       "goal_rate": 0.68,
       "strength": 70
     },
     {
       "name": "Michael Olise",
+      "position": "RW",
       "speed": 90,
       "goal_rate": 0.77,
       "strength": 66
     },
     {
       "name": "Luis Diaz",
+      "position": "LW",
       "speed": 91,
       "goal_rate": 0.72,
       "strength": 74
     },
     {
       "name": "Serge Gnabry",
+      "position": "ST",
       "speed": 85,
       "goal_rate": 0.65,
       "strength": 72
     },
     {
       "name": "Harry Kane",
+      "position": "ST",
       "speed": 74,
       "goal_rate": 0.94,
       "strength": 90
